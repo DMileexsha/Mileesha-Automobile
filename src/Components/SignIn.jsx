@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
-import { Input } from "./UI/input";
-import { Button } from "./UI/button";
+import { Input } from "./UI/Input";
+import { Button } from "./UI/Button";
 import { Separator } from "./UI/Separator";
 import { Card, CardContent, CardHeader, CardTitle } from "./UI/card";
 import {
