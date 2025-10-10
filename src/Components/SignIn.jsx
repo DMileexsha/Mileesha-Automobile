@@ -4,7 +4,7 @@ import { Footer } from "./Footer";
 import { Input } from "./UI/Input";
 import { Button } from "./UI/Button";
 import { Separator } from "./UI/Separator";
-import { Card, CardContent, CardHeader, CardTitle } from "./UI/card";
+import { Card, CardContent, CardHeader, CardTitle } from "./UI/Card";
 import {
   Eye,
   EyeOff,
