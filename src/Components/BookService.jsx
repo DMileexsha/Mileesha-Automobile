@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 import { Header } from "../Components/Header";
 import { Footer } from "../Components/Footer";
-import  {Button}  from "../Components/UI/button";
+import  {Button}  from "../Components/UI/Button";
 import { TextArea } from "../Components/UI/TextArea";
-import { Input } from "../Components/UI/input";
+import { Input } from "../Components/UI/Input";
 import mylogo from "../assets/mylogo.png";
 
 
