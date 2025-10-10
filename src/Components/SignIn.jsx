@@ -3,7 +3,7 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { Input } from "./UI/input";
 import { Button } from "./UI/button";
-import { Separator } from "./UI/separator";
+import { Separator } from "./UI/Separator";
 import { Card, CardContent, CardHeader, CardTitle } from "./UI/card";
 import {
   Eye,
