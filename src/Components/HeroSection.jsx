@@ -67,7 +67,7 @@ export function HeroSection () {
         <div>
             <img
                src={car}
-               className='w-[1000px] animate-float '/>
+               className='w-[1000px]  '/>
         </div>
        
     </div>  
@@ -86,7 +86,7 @@ export function HeroSection () {
     <h2 className='text-4xl lg:text-5xl font-bold mb-6'>Reconditioned Vehicles</h2>
     <button 
        size='lg'
-       className='bg-red-500 hover:bg-red-600 text-white font-semibold rounded cursor-pointer px-7 py-3'
+       className='bg-gradient-to-r from-gray-900 to-gray-700 hover:bg-red-600 text-white font-semibold rounded cursor-pointer px-7 py-3'
        onClick={() => navigate('/reconditioned-Vehicles')}>
 
         View Vehicles
@@ -114,7 +114,7 @@ export function HeroSection () {
        key={index}
        onClick={()=> scrollToSlide(index)}
        className={`w-3 h-3 rounded-full ${
-        currentSlide === index ? "bg-red-500 scale-125" : "bg-white/50 hover:bg-white/75"} transition-all`}
+        currentSlide === index ? "bg-gradient-to-r from-gray-800 to-gray-700 scale-125" : "bg-white/50 hover:bg-white/75"} transition-all`}
     />
   ))}
 </div>

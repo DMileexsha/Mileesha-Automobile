@@ -71,29 +71,46 @@ const navigate = useNavigate();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [selectedService, setSelectedService] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Service booking submitted:", bookingData);
-    setIsSubmitted(true);
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setBookingData({
-        customerName: "",
-        email: "",
-        phone: "",
-        vehicleMake: "",
-        vehicleModel: "",
-        vehicleYear: "",
-        licensePlate: "",
-        serviceType: "",
-        preferredDate: "",
-        preferredTime: "",
-        additionalNotes: "",
-      });
-      setSelectedService("");
-    }, 5000);
-  };
+  try {
+    const response = await fetch("http://localhost:8080/api/booking", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bookingData),
+    });
+
+    if (response.ok) {
+      console.log("Booking submitted successfully!");
+      setIsSubmitted(true);
+
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setBookingData({
+          customerName: "",
+          email: "",
+          phone: "",
+          vehicleMake: "",
+          vehicleModel: "",
+          vehicleYear: "",
+          licensePlate: "",
+          serviceType: "",
+          preferredDate: "",
+          preferredTime: "",
+          additionalNotes: "",
+        });
+        setSelectedService("");
+      }, 5000);
+    } else {
+      console.error("Failed to submit booking");
+    }
+  } catch (error) {
+    console.error("Error submitting booking:", error);
+  }
+};
 
   const handleChange = (e) => {
     setBookingData({ ...bookingData, [e.target.name]: e.target.value });
@@ -111,7 +128,7 @@ const navigate = useNavigate();
       <Header />
 
       <main className="pt-20">
-        <section className="bg-gradient-to-r from-red-600 to-red-700 text-white py-16 px-6">
+        <section className="bg-gradient-to-r from-gray-900 to-gray-700 text-white py-16 px-6">
   <     div className="max-w-xl mx-auto flex items-center gap-8">
     
         {/* Left: Logo */}

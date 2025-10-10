@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { Input } from "./UI/input";
 import { Button } from "./UI/button";
-import { Separator } from "./UI/separator"
+import { Separator } from "./UI/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "./UI/card";
-
 import {
   Eye,
   EyeOff,
@@ -16,12 +15,19 @@ import {
   Car,
   CheckCircle,
 } from "lucide-react";
+import { auth, googleProvider, facebookProvider } from "../Firebase"; // <-- top-level import
+import { signInWithPopup } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../Context/AuthContext";
+
 
 export default function SignIn() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const { login } = useContext(AuthContext);
 
   const [signInData, setSignInData] = useState({
     email: "",
@@ -37,9 +43,11 @@ export default function SignIn() {
     confirmPassword: "",
   });
 
+  // Normal sign-in
   const handleSignInSubmit = (e) => {
     e.preventDefault();
-    console.log("Sign in data:", signInData);
+    const mockUser = { firstName: "User", email: signInData.email };
+    login(mockUser);
     setIsSubmitted(true);
     setTimeout(() => {
       setIsSubmitted(false);
@@ -47,13 +55,15 @@ export default function SignIn() {
     }, 3000);
   };
 
+  // Normal sign-up
   const handleSignUpSubmit = (e) => {
     e.preventDefault();
     if (signUpData.password !== signUpData.confirmPassword) {
       alert("Passwords don't match!");
       return;
     }
-    console.log("Sign up data:", signUpData);
+    const mockUser = { firstName: signUpData.firstName, email: signUpData.email };
+    login(mockUser);
     setIsSubmitted(true);
     setTimeout(() => {
       setIsSubmitted(false);
@@ -74,6 +84,28 @@ export default function SignIn() {
 
   const handleSignUpChange = (e) => {
     setSignUpData({ ...signUpData, [e.target.name]: e.target.value });
+  };
+
+  // Google login
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      login({ firstName: user.displayName, email: user.email });
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+    }
+  };
+
+  // Facebook login
+  const handleFacebookSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, facebookProvider);
+      const user = result.user;
+      login({ firstName: user.displayName, email: user.email });
+    } catch (error) {
+      console.error("Facebook sign-in error:", error);
+    }
   };
 
   return (
@@ -179,11 +211,7 @@ export default function SignIn() {
                           onClick={() => setShowPassword(!showPassword)}
                           className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                         >
-                          {showPassword ? (
-                            <EyeOff className="h-4 w-4" />
-                          ) : (
-                            <Eye className="h-4 w-4" />
-                          )}
+                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
                       </div>
                     </div>
@@ -250,38 +278,41 @@ export default function SignIn() {
                   </form>
                 )}
 
-                {/* Extra separator */}
+                {/* Social Login */}
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
                     <Separator className="w-full" />
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-gray-500">
-                      Or continue with
-                    </span>
+                    <span className="px-2 bg-white text-gray-500">Or continue with</span>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
-               {/* Google Button */}
-              <button className="flex items-center justify-center gap-2 w-full border border-gray-300 bg-white text-gray-700 py-2 rounded  transition">
-              <img
-              src="https://www.svgrepo.com/show/475656/google-color.svg"
-              alt="Google"
-              className="w-5 h-5"/>
-              <span className="text-sm font-medium">Google</span>
-              </button>
+                  <button
+                    onClick={handleGoogleSignIn}
+                    className="flex items-center justify-center gap-2 w-full border border-gray-300 bg-white text-gray-700 py-2 rounded transition"
+                  >
+                    <img
+                      src="https://www.svgrepo.com/show/475656/google-color.svg"
+                      alt="Google"
+                      className="w-5 h-5"
+                    />
+                    <span className="text-sm font-medium">Google</span>
+                  </button>
 
-              {/* Facebook Button */}
-              <button className="flex items-center justify-center gap-2 w-full border border-gray-300 bg-white text-gray-700 py-2 rounded transition">
-              <img
-            src="https://www.svgrepo.com/show/452196/facebook-1.svg"
-            alt="Facebook"
-            className="w-5 h-5"/>
-            <span className="text-sm font-medium">Facebook</span>
-            </button>
-            </div>
-                
+                  <button
+                    onClick={handleFacebookSignIn}
+                    className="flex items-center justify-center gap-2 w-full border border-gray-300 bg-white text-gray-700 py-2 rounded transition"
+                  >
+                    <img
+                      src="https://www.svgrepo.com/show/452196/facebook-1.svg"
+                      alt="Facebook"
+                      className="w-5 h-5"
+                    />
+                    <span className="text-sm font-medium">Facebook</span>
+                  </button>
+                </div>
               </CardContent>
             </Card>
           )}
