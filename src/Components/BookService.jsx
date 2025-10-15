@@ -75,7 +75,7 @@ const navigate = useNavigate();
   e.preventDefault();
 
   try {
-    const response = await fetch("http://localhost:8080/api/booking", {
+    const response = await fetch("https://automobile-backend-06c8.onrender.com/api/booking", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
