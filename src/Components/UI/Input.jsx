@@ -10,7 +10,7 @@ export function Input({
   className = "",
 }) {
   return (
-    <Input
+    <input
       id={id}
       name={name}
       type={type}
